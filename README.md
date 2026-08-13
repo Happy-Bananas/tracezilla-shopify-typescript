@@ -33,6 +33,13 @@ docker compose run --rm app --limit=25
 docker compose run --rm app --json
 ```
 
+Preview or explicitly create missing tracezilla SKUs:
+
+```bash
+docker compose run --rm --entrypoint npm app run create-skus -- --limit=10
+docker compose run --rm --entrypoint npm app run create-skus -- --execute --confirm --limit=1
+```
+
 The complete catalogs are always compared. `--limit` controls only the maximum
 number of rows displayed from each result category; it defaults to 10. JSON
 output contains the complete result arrays.
@@ -43,8 +50,8 @@ The application runs entirely in its Docker image, so Node.js is not required
 on the host:
 
 ```bash
-docker compose run --rm app npm test
-docker compose run --rm app npm run typecheck
+docker compose run --rm --entrypoint npm app test
+docker compose run --rm --entrypoint npm app run typecheck
 ```
 
 Tests use in-memory readers and mappers and never contact either API.

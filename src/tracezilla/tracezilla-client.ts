@@ -15,4 +15,10 @@ export class TracezillaClient {
     );
     return payload;
   }
+
+  async post(path: string, payload: Record<string, unknown>): Promise<unknown> {
+    const url = `${this.configuration.tracezillaBaseUrl}/api/v1/${this.configuration.tracezillaTeamSlug}/${path.replace(/^\//, "")}`;
+    const response = await fetchJson(url, { method: "POST", headers: { Accept: "application/json", Authorization: `Bearer ${this.configuration.tracezillaApiKey}`, "Content-Type": "application/json" }, body: JSON.stringify(payload) }, this.configuration.timeoutMs, "tracezilla");
+    return response.payload;
+  }
 }

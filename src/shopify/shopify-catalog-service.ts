@@ -11,7 +11,12 @@ export class ShopifyCatalogService implements CatalogReader {
   constructor(private readonly client: GraphqlClient, private readonly mapper: ShopifyVariantMapper) {}
 
   async read(): Promise<CatalogItem[]> {
-    const items: CatalogItem[] = [];
+    const variants = await this.readVariants();
+    return variants.flatMap((variant) => { const item = this.mapper.map(variant); return item ? [item] : []; });
+  }
+
+  async readVariants(): Promise<Record<string, unknown>[]> {
+    const items: Record<string, unknown>[] = [];
     let after: string | null = null;
     do {
       const payload = await this.client.graphql(GET_PRODUCT_VARIANTS, { first: 250, after });
@@ -21,8 +26,7 @@ export class ShopifyCatalogService implements CatalogReader {
         throw new Error("Shopify response is missing productVariants.");
       }
       for (const variant of connection.nodes) {
-        const item = this.mapper.map(variant);
-        if (item) items.push(item);
+        if (isRecord(variant)) items.push(variant);
       }
       const hasNextPage = connection.pageInfo.hasNextPage === true;
       after = typeof connection.pageInfo.endCursor === "string" ? connection.pageInfo.endCursor : null;

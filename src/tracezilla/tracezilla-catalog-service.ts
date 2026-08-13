@@ -4,6 +4,7 @@ import { TracezillaSkuMapper } from "./tracezilla-sku-mapper.js";
 
 interface JsonGetClient {
   get(path: string, query: Record<string, string | number>): Promise<unknown>;
+  post?(path: string, payload: Record<string, unknown>): Promise<unknown>;
 }
 
 export class TracezillaCatalogService implements CatalogReader {
@@ -32,5 +33,11 @@ export class TracezillaCatalogService implements CatalogReader {
       visited.add(fingerprint);
     } while (true);
     return items;
+  }
+
+  async existingSkuCodes(): Promise<string[]> { return [...new Set((await this.read()).map((item) => item.sku))]; }
+  async createSku(payload: Record<string, unknown>): Promise<unknown> {
+    if (!this.client.post) throw new Error("tracezilla client cannot create SKUs.");
+    return this.client.post("skus", payload);
   }
 }

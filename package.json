@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "compare": "tsx src/cli/compare-catalogs.ts",
+    "create-skus": "tsx src/cli/create-tracezilla-skus.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

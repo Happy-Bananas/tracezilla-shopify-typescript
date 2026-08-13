@@ -51,6 +51,15 @@ docker compose run --rm --entrypoint npm app run locations --
 docker compose run --rm --entrypoint npm app run locations -- --json
 ```
 
+Synchronize inventory with an explicit source and target (dry run by default):
+
+```bash
+docker compose run --rm --entrypoint npm app run inventory -- \
+  --shopify-location=gid://shopify/Location/123 --tracezilla-warehouse=2 --limit=10
+```
+
+Writes additionally require `--execute --confirm`.
+
 ## Local development and tests
 
 The application runs entirely in its Docker image, so Node.js is not required

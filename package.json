@@ -8,6 +8,7 @@
     "compare": "tsx src/cli/compare-catalogs.ts",
     "create-skus": "tsx src/cli/create-tracezilla-skus.ts",
     "locations": "tsx src/cli/list-shopify-locations.ts",
+    "inventory": "tsx src/cli/synchronize-inventory.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
